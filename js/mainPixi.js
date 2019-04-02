@@ -62,7 +62,7 @@
 
 	document.addEventListener("DOMContentLoaded", function() {
 		getJSON('data/newElectionData.json', function(topo) {
-			var map = L.map('map').setView([50.455779, 30.464253], 9);
+			var map = L.map('map').setView([50.455779, 30.464253], 8);
 
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 				maxZoom: 18,
@@ -71,6 +71,8 @@
 				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 				id: 'mapbox.light'
 			}).addTo(map);
+
+			map.scrollWheelZoom.disable()
 
 
 			// var gl = L.mapboxGL({
@@ -81,7 +83,7 @@
 	
 
 			map.attributionControl.setPosition('bottomleft');
-			map.zoomControl.setPosition('bottomright');
+			map.zoomControl.setPosition('topleft');
 
 			let zelenskiColor = "0x4e9a69";
 			let poroshenkoColor = "0x790a4f";
@@ -218,6 +220,11 @@
 							}
 
 							geojson.features.forEach(function(feature, index) {
+
+								if (feature.properties.d == '530055') {
+									console.log(feature);
+								}
+
 								// here
 								let zelenski = feature.properties.z / feature.properties.v9 * 100
 								let poroshenko = feature.properties.p / feature.properties.v9 * 100					
@@ -396,7 +403,7 @@
 													+ feat.properties.p +  "</span>"  
 													+ "</br>" + "<span>Явка на дільниці: "  
 													+ Math.round(feat.properties.v9/feat.properties.v2 * 100) +  "%</span>"
-													+ '</br><span>Населення:</span>' + feat.properties.v2 + '</span>'                         
+													// + '</br><span>Населення:</span>' + feat.properties.v2 + '</span>'                         
 													)
 										.openOn(map);								
 
