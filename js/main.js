@@ -1,9 +1,9 @@
 let map = L.map('map')
     .setView([50.455779, 30.464253], 7);
 
-let zelenskiColor = "#000253";
-let poroshenkoColor = "#bc3939";
-let closeResultColor = "#874e8e";
+let zelenskiColor = "#4e9a69";
+let poroshenkoColor = "#790a4f";
+let closeResultColor = "#4D7794";
 let emptyColor = "#dddddd";
 
 
@@ -34,10 +34,10 @@ legend.addTo(map);
 //   //L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-lite,$fff[difference],$fff[@23],$fff[hsl-saturation@20])/{z}/{x}/{y}.png")
 //   .addTo(map);
 
-wget(['electionData.json'], function (electionPolygon) {
+wget(['newElectionData.json'], function (electionPolygon) {
 
     let tj = JSON.parse(electionPolygon);
-    let poly = topojson.feature(tj, tj.objects["simplified.merged"]);
+    let poly = topojson.feature(tj, tj.objects["-"]);
 
 
     function opacify(color, op) {
@@ -75,7 +75,7 @@ wget(['electionData.json'], function (electionPolygon) {
             let p = feature.properties.p  ? feature.properties.p : 'Немає даних'
             let yavka = feature.properties.v9/feature.properties.v2 * 100
             yavka = yavka != NaN ? Math.round(yavka) : "Немає даних"
-            console.log(yavka);
+
 
             L.popup()
                 .setLatLng(e.latlng)
