@@ -79,15 +79,24 @@
 			let poroshenkoColor = "0x790a4f";
 			let closeResultColor = "0x4D7794";
 			let emptyColor = "0x000";
+			let legend = L.control({position: 'topright'});
 
-			// L.control.legend = function(opts) {
-			// 	return new L.Control.Legend(opts);
-			// }
-
-			// L.control.legend({ position: 'bottomright' }).addTo(map);
-
-			// var legend = document.querySelector('div.legend.geometry');
-			// var legendContent = legend.querySelector('.content');
+			legend.onAdd = function (map) {
+			
+			var div = L.DomUtil.create('div', 'info legend'),
+				grades = [zelenskiColor, closeResultColor, poroshenkoColor],
+				labels = ["Зеленський", "Близький результат" ,"Порошенко"];
+						
+			// loop through our density intervals and generate a label with a colored square for each interval
+			for (var i = 0; i < grades.length; i++) {
+				div.innerHTML +=
+					'<span class="dot" style="background:' + grades[i].replace('0x', '#') + '"></span> ' + " " + labels[i] +'<br>';
+			}
+			
+			return div;
+			};
+			
+			legend.addTo(map);
 
 
 			var pixiLayer = (function() {
@@ -352,10 +361,10 @@
 									}
 								}
 							}
-							function focusFeature(feat) {
+							function focusFeature(feat, latlng) {
 								if (focus) focus.removeFrom(utils.getMap());
 								if (feat) {
-									if (feat.properties.res !== -1) {
+									if (feat.properties.z) {
 										focus = L.geoJSON(feat, {
 											coordsToLatLng: utils.layerPointToLatLng,
 											style: function (feature) {
@@ -368,40 +377,42 @@
 											interactive: false
 										});
 										focus.addTo(utils.getMap());
-										var insee = feat.properties.insee;
-										var dpt;
-										if (insee[0] === '9' && insee[1] === '7') {
-											dpt = insee.substring(0, 3);
-										} else {
-											dpt = '0' + insee.substring(0, 2);
-										}
-										getJSON('data/t2/' + dpt + '/' + feat.properties.insee + '.json', function(data) {
-											var merged = barbiche('details').merge({
-												panneau2candidate: panneau2candidate,
-												panneau2color: panneau2color,
-												getRatio: function(a, b) {return Math.round(a * 10000 / b) / 100;},
-												fill: function(str) {
-													if (str.length < 6) {
-														return (new Array(6 - str.length + 1)).join('0') + str;
-													} else return str;
-												}
-											}, data);
-											legendContent.innerHTML = '';
-											legendContent.appendChild(merged);
-											L.DomUtil.removeClass(legend, 'hide');
-										});
+
+
+										L.popup()
+										.setLatLng(latlng)
+										.setContent("<b>" + "Номер дільниці: " + feat.properties.d + "</b>" 
+													+ "</br>" + "<span>Проголосували за Зеленського: "  
+													+ feat.properties.z +  "</span>"
+													+ "</br>" + "<span>Проголосували за Порошенка: "  
+													+ feat.properties.p +  "</span>"  
+													+ "</br>" + "<span>Явка на дільниці: "  
+													+ Math.round(feat.properties.v9/feat.properties.v2 * 100) +  "%</span>"                           
+													)
+										.openOn(map);								
+
 									} else {
-										focus = null;
-										L.DomUtil.addClass(legend, 'hide');
+										focus = L.geoJSON(feat, {
+											coordsToLatLng: utils.layerPointToLatLng,
+											style: function (feature) {
+												return {
+													fillColor: '#fff',
+													fillOpacity: 0.7,
+													stroke: false
+												};
+											},
+											interactive: false
+										});
+										focus.addTo(utils.getMap());
 									};
 								} else {
-									focus = null;
-									L.DomUtil.addClass(legend, 'hide');
+									// focus = null;
+									// L.DomUtil.addClass(legend, 'hide');
 								}
 							}
 							utils.getMap().on('click', function(e) {
 								var feat = findFeature(e.latlng);
-								focusFeature(feat);
+								focusFeature(feat, e.latlng);
 							});
 							utils.getMap().on('mousemove', L.Util.throttle(function(e) {
 								var feat = findFeature(e.latlng);
