@@ -1,0 +1,208 @@
+.poll_chart {
+  position: relative;
+
+  $area-opacity: 0.2;
+
+  svg {width: 100%; height: 100%;}
+
+  svg {
+    position: absolute;
+    left: 0;
+    top: 0;
+  };
+
+  rect.mouse-trap {
+    fill: white;
+  }
+
+  svg {
+    shape-rendering: crispEdges;
+    overflow: visible;
+
+    .cross {
+      stroke: black;
+    }
+
+  > g {
+    cursor: crosshair;
+  }
+
+    .axis path {
+      opacity: .1;
+      stroke-width: 1;
+    }
+
+    .axis--x {
+      path.domain {
+        stroke: #ccc;
+        opacity: 1;
+      }
+
+      line {display: none;}
+    }
+
+    .axis--y path.domain {
+      display: none;
+      stroke: black;
+      opacity: 1;
+    }
+
+    .axis--y.axis--y--ticks .tick {
+      line {
+        stroke: #eee;
+        stroke-width: 1;
+      }
+
+      text {display:none;}
+    }
+
+    .axis--y.axis--y--labels .tick {
+      text {
+        fill: #777;
+        text-anchor: start;
+      }
+    }
+
+    .chart-pane .line {
+      fill: none;
+      stroke: black;
+      stroke-opacity: 0.9;
+      //stroke-dasharray: 10,10;
+      shape-rendering: geometricPrecision;
+      stroke-width: 3;
+
+      &.boundary {
+        stroke-opacity: 0.3;
+        stroke-width: 1;
+      }
+    }
+
+    .chart-pane .area {
+      fill-opacity: $area-opacity;
+      fill: white;
+      shape-rendering: geometricPrecision;
+    }
+
+    .chart-pane .area.center {
+      fill-opacity: 0.8;
+      fill: white;
+      shape-rendering: geometricPrecision;
+    }
+
+    .points-pane circle {
+      fill: grey;
+      fill-opacity: 0.7;
+      shape-rendering: geometricPrecision;
+    }
+
+    .points-popup-pane circle {
+      //fill-opacity: 0;
+      stroke: none;
+      shape-rendering: geometricPrecision;
+    }
+
+    .chart-pane .hidden {
+      display: none !important;
+    }
+
+    .moving-g .hidden {
+      display: none !important;
+    }
+
+    line.year-line {stroke: black;}
+    line.top-line {stroke: black; stroke-dasharray: 4 4}
+
+    text.result {
+      text-anchor: middle;
+      font-size: 1.3em;
+      font-weight: 600;
+
+      &.background {
+        text-anchor: middle;
+        font-size: 1.3em;
+        fill: none !important;
+        stroke-width: 0.5rem;
+        stroke-opacity: 1;
+        stroke-linejoin: round;
+      }
+    }
+
+    text.moving-date {
+      text-anchor: start;
+    }
+
+    g.distribution {
+      rect.distribution {
+        fill-opacity: $area-opacity;
+        cursor: pointer;
+      }
+
+      line.median-line {
+        stroke-width: 3px;
+        pointer-events: none;
+      }
+
+      text {
+        font-size: 1em;
+      }
+
+      text.candidate-name {
+        pointer-events: none;
+
+        &.background {
+          fill: none !important;
+          stroke-opacity: 1 !important;
+          stroke-width: 0.2rem;
+          stroke-linejoin: round;
+          stroke: white;
+        }
+      }
+
+      text.bottom-percent {
+        text-anchor: end;
+      }
+
+      text.up-percent, text.median-percent {
+        text-anchor: start;
+      }
+
+      text.percent {
+        display: none;
+        pointer-events: none;
+      }
+
+      &:hover {
+        text.percent {
+          display: block;
+        }
+      }
+
+      @media #{$brk-mobile} {
+        &:hover {
+          text.percent {
+            display: none !important;
+          }
+        }
+      }
+    }
+
+    .annotations-pane text {
+      font-size: 13px;
+
+      &.percent-background {
+        //text-anchor: middle;
+        fill: none !important;
+        stroke-width: 0.5rem;
+        stroke-opacity: 1;
+        stroke-linejoin: round;
+      }
+    }
+
+  }
+
+
+
+
+
+  canvas {}
+}

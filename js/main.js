@@ -1,10 +1,14 @@
 let map = L.map('map')
-    .setView([50.455779, 30.464253], 7);
+    .setView([50.455779, 30.464253], 14);
 
-let zelenskiColor = "#000253";
-let poroshenkoColor = "#bc3939";
-let closeResultColor = "#874e8e";
-let emptyColor = "#dddddd";
+
+
+// .setView([48.455779, 30.464253], 6);
+
+let zelenskiColor = "#4e9a69";
+let poroshenkoColor = "#790a4f";
+let closeResultColor = "#4D7794";
+let emptyColor = "#000";
 
 
 let legend = L.control({position: 'topright'});
@@ -30,18 +34,17 @@ legend.addTo(map);
 
 
 
-// L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-background,$fff[difference],$fff[@23],$fff[hsl-saturation@20],toner-lines[destination-in])/{z}/{x}/{y}.png")
-//   //L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-lite,$fff[difference],$fff[@23],$fff[hsl-saturation@20])/{z}/{x}/{y}.png")
-//   .addTo(map);
 
-wget(['electionData.json'], function (electionPolygon) {
+wget(['data/newElectionData.json'], function (electionPolygon) {
 
     let tj = JSON.parse(electionPolygon);
-    let poly = topojson.feature(tj, tj.objects["simplified.merged"]);
-
+    let poly = topojson.feature(tj, tj.objects["-"]);
+    // poly.features = poly.features.filter(f => f.properties.d=="801029");
+    poly.features = poly.features.filter(f => f.geometry.type=="MultiPolygon");
 
     function opacify(color, op) {
         op = Math.min(op, 1);
+        // op = 1;
 
         color = d3.color(color);
 
@@ -49,8 +52,7 @@ wget(['electionData.json'], function (electionPolygon) {
             opacify_component(color.r, op) / 255,
             opacify_component(color.g, op) / 255,
             opacify_component(color.b, op) / 255
-        )
-        //  .toString();        
+        );
 
         function opacify_component(c, op) {
             return c * op + (1 - op) * 255;
@@ -59,23 +61,34 @@ wget(['electionData.json'], function (electionPolygon) {
 
     let selected;
 
-
     let shapes = L.glify.shapes({
         map: map,
         click: function (e, feature) {
+            console.log(feature);
 
-            if (selected != undefined) {
-                selected.remove()
-            }
+            // if (selected != undefined) {
+            //     selected.remove()
+            // }
+
+            L.glify.shapes({
+                map: map,
+                data: { type: 'Feature Collection', features: [feature] },
+                click: function(e, feature) {
+                  //do something when a shape is clicked
+                }, 
+                color: function() {
+                    return opacify('blue', 1);
+                }
+              });
 
             // adding polygon on selected 
-            selected = L.geoJSON({ type: 'Feature Collection', features: [feature] }, {style: {color: 'yellow'}}).addTo(map);
+            // selected = L.geoJSON({ type: 'Feature Collection', features: [feature] }, {style: {color: 'yellow'}}).addTo(map);
 
             let z = feature.properties.z  ? feature.properties.z : 'Немає даних'
             let p = feature.properties.p  ? feature.properties.p : 'Немає даних'
             let yavka = feature.properties.v9/feature.properties.v2 * 100
-            yavka = yavka == NaN ? yavka : "Немає даних"
-            console.log(yavka);
+            yavka = yavka != NaN ? Math.round(yavka) : "Немає даних"
+
 
             L.popup()
                 .setLatLng(e.latlng)
@@ -89,8 +102,10 @@ wget(['electionData.json'], function (electionPolygon) {
                             )
                 .openOn(map);
         },
-        opacity: 1,
+        opacity: 0.5,
         color: function (index, feature) {
+            return opacify('blue', 1);
+
             if (!feature.properties.v9) {
                 return opacify(emptyColor, 1)
             }
@@ -98,7 +113,8 @@ wget(['electionData.json'], function (electionPolygon) {
             let zelenski = feature.properties.z / feature.properties.v9 * 100
             let poroshenko = feature.properties.p / feature.properties.v9 * 100
 
-            let yavka = feature.properties.v2 / 1000
+            var area = turf.area(feature);
+            let yavka = feature.properties.v2 / area * 40000
 
             let diff = zelenski - poroshenko
 
@@ -116,11 +132,6 @@ wget(['electionData.json'], function (electionPolygon) {
                 // if Z has more votes
                 if (diff > 0) {
                     color = opacify(zelenskiColor, yavka)
-                    // color = {
-                    // 'r': 0,
-                    // 'g': 0.71,
-                    // 'b': 0.28       
-                    // }
                 }
                 // if P has more votes
                 else {
@@ -134,12 +145,16 @@ wget(['electionData.json'], function (electionPolygon) {
         data: poly
     });
 
-    console.log(shapes);
-
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.light'
+    }).addTo(map);
 
 });
 
-// request data from json
 function wget(urls, fn) {
     let results = [],
         complete = 0,

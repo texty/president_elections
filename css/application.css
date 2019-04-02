@@ -1,0 +1,345 @@
+body {
+  font-family: "Open Sans", sans-serif;
+  font-size: 14px; }
+
+p {
+  font-size: 1em; }
+
+svg text {
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.3em; }
+
+header {
+  position: fixed;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  width: 100vw;
+  border-bottom: 1px solid #ccc; }
+  header .main-logo {
+    height: 2.5em; }
+  header .social-icons {
+    width: 3em;
+    margin-left: 2em; }
+    header .social-icons a {
+      font-size: 1.3em;
+      color: #aaa; }
+      header .social-icons a:hover {
+        color: orange; }
+  header .lang-link {
+    color: #424242; }
+
+.poll_chart {
+  position: relative; }
+  .poll_chart svg {
+    width: 100%;
+    height: 100%; }
+  .poll_chart svg {
+    position: absolute;
+    left: 0;
+    top: 0; }
+  .poll_chart rect.mouse-trap {
+    fill: white; }
+  .poll_chart svg {
+    shape-rendering: crispEdges;
+    overflow: visible; }
+    .poll_chart svg .cross {
+      stroke: black; }
+    .poll_chart svg > g {
+      cursor: crosshair; }
+    .poll_chart svg .axis path {
+      opacity: .1;
+      stroke-width: 1; }
+    .poll_chart svg .axis--x path.domain {
+      stroke: #ccc;
+      opacity: 1; }
+    .poll_chart svg .axis--x line {
+      display: none; }
+    .poll_chart svg .axis--y path.domain {
+      display: none;
+      stroke: black;
+      opacity: 1; }
+    .poll_chart svg .axis--y.axis--y--ticks .tick line {
+      stroke: #eee;
+      stroke-width: 1; }
+    .poll_chart svg .axis--y.axis--y--ticks .tick text {
+      display: none; }
+    .poll_chart svg .axis--y.axis--y--labels .tick text {
+      fill: #777;
+      text-anchor: start; }
+    .poll_chart svg .chart-pane .line {
+      fill: none;
+      stroke: black;
+      stroke-opacity: 0.9;
+      shape-rendering: geometricPrecision;
+      stroke-width: 3; }
+      .poll_chart svg .chart-pane .line.boundary {
+        stroke-opacity: 0.3;
+        stroke-width: 1; }
+    .poll_chart svg .chart-pane .area {
+      fill-opacity: 0.2;
+      fill: white;
+      shape-rendering: geometricPrecision; }
+    .poll_chart svg .chart-pane .area.center {
+      fill-opacity: 0.8;
+      fill: white;
+      shape-rendering: geometricPrecision; }
+    .poll_chart svg .points-pane circle {
+      fill: grey;
+      fill-opacity: 0.7;
+      shape-rendering: geometricPrecision; }
+    .poll_chart svg .points-popup-pane circle {
+      stroke: none;
+      shape-rendering: geometricPrecision; }
+    .poll_chart svg .chart-pane .hidden {
+      display: none !important; }
+    .poll_chart svg .moving-g .hidden {
+      display: none !important; }
+    .poll_chart svg line.year-line {
+      stroke: black; }
+    .poll_chart svg line.top-line {
+      stroke: black;
+      stroke-dasharray: 4 4; }
+    .poll_chart svg text.result {
+      text-anchor: middle;
+      font-size: 1.3em;
+      font-weight: 600; }
+      .poll_chart svg text.result.background {
+        text-anchor: middle;
+        font-size: 1.3em;
+        fill: none !important;
+        stroke-width: 0.5rem;
+        stroke-opacity: 1;
+        stroke-linejoin: round; }
+    .poll_chart svg text.moving-date {
+      text-anchor: start; }
+    .poll_chart svg g.distribution rect.distribution {
+      fill-opacity: 0.2;
+      cursor: pointer; }
+    .poll_chart svg g.distribution line.median-line {
+      stroke-width: 3px;
+      pointer-events: none; }
+    .poll_chart svg g.distribution text {
+      font-size: 1em; }
+    .poll_chart svg g.distribution text.candidate-name {
+      pointer-events: none; }
+      .poll_chart svg g.distribution text.candidate-name.background {
+        fill: none !important;
+        stroke-opacity: 1 !important;
+        stroke-width: 0.2rem;
+        stroke-linejoin: round;
+        stroke: white; }
+    .poll_chart svg g.distribution text.bottom-percent {
+      text-anchor: end; }
+    .poll_chart svg g.distribution text.up-percent, .poll_chart svg g.distribution text.median-percent {
+      text-anchor: start; }
+    .poll_chart svg g.distribution text.percent {
+      display: none;
+      pointer-events: none; }
+    .poll_chart svg g.distribution:hover text.percent {
+      display: block; }
+    @media (max-width: 700px) {
+      .poll_chart svg g.distribution:hover text.percent {
+        display: none !important; } }
+    .poll_chart svg .annotations-pane text {
+      font-size: 13px; }
+      .poll_chart svg .annotations-pane text.percent-background {
+        fill: none !important;
+        stroke-width: 0.5rem;
+        stroke-opacity: 1;
+        stroke-linejoin: round; }
+
+.Tymoshenko.stroke-color {
+  stroke: #e41a1c !important; }
+.Tymoshenko.fill-color {
+  fill: #e41a1c !important; }
+.Tymoshenko.stroke-pseudo-transparent-color {
+  stroke: #fad1d2 !important; }
+.Tymoshenko .stroke-color {
+  stroke: #e41a1c !important; }
+.Tymoshenko .fill-color {
+  fill: #e41a1c !important; }
+.Tymoshenko .stroke-pseudo-transparent-color {
+  stroke: #fad1d2 !important; }
+
+.Poroshenko.stroke-color {
+  stroke: #377eb8 !important; }
+.Poroshenko.fill-color {
+  fill: #377eb8 !important; }
+.Poroshenko.stroke-pseudo-transparent-color {
+  stroke: #d7e5f1 !important; }
+.Poroshenko .stroke-color {
+  stroke: #377eb8 !important; }
+.Poroshenko .fill-color {
+  fill: #377eb8 !important; }
+.Poroshenko .stroke-pseudo-transparent-color {
+  stroke: #d7e5f1 !important; }
+
+.Zelensky.stroke-color {
+  stroke: #4daf4a !important; }
+.Zelensky.fill-color {
+  fill: #4daf4a !important; }
+.Zelensky.stroke-pseudo-transparent-color {
+  stroke: #dbefdb !important; }
+.Zelensky .stroke-color {
+  stroke: #4daf4a !important; }
+.Zelensky .fill-color {
+  fill: #4daf4a !important; }
+.Zelensky .stroke-pseudo-transparent-color {
+  stroke: #dbefdb !important; }
+
+.Grytsenko.stroke-color {
+  stroke: #984ea3 !important; }
+.Grytsenko.fill-color {
+  fill: #984ea3 !important; }
+.Grytsenko.stroke-pseudo-transparent-color {
+  stroke: #eadced !important; }
+.Grytsenko .stroke-color {
+  stroke: #984ea3 !important; }
+.Grytsenko .fill-color {
+  fill: #984ea3 !important; }
+.Grytsenko .stroke-pseudo-transparent-color {
+  stroke: #eadced !important; }
+
+.Boyko.stroke-color {
+  stroke: #ff7f00 !important; }
+.Boyko.fill-color {
+  fill: #ff7f00 !important; }
+.Boyko.stroke-pseudo-transparent-color {
+  stroke: #ffe5cc !important; }
+.Boyko .stroke-color {
+  stroke: #ff7f00 !important; }
+.Boyko .fill-color {
+  fill: #ff7f00 !important; }
+.Boyko .stroke-pseudo-transparent-color {
+  stroke: #ffe5cc !important; }
+
+.Lyashko.stroke-color {
+  stroke: #ff02e7 !important; }
+.Lyashko.fill-color {
+  fill: #ff02e7 !important; }
+.Lyashko.stroke-pseudo-transparent-color {
+  stroke: #ffccfa !important; }
+.Lyashko .stroke-color {
+  stroke: #ff02e7 !important; }
+.Lyashko .fill-color {
+  fill: #ff02e7 !important; }
+.Lyashko .stroke-pseudo-transparent-color {
+  stroke: #ffccfa !important; }
+
+.Undecided.stroke-color {
+  stroke: #c1c1c1 !important; }
+.Undecided.fill-color {
+  fill: #c1c1c1 !important; }
+.Undecided.stroke-pseudo-transparent-color {
+  stroke: #f3f3f3 !important; }
+.Undecided .stroke-color {
+  stroke: #c1c1c1 !important; }
+.Undecided .fill-color {
+  fill: #c1c1c1 !important; }
+.Undecided .stroke-pseudo-transparent-color {
+  stroke: #f3f3f3 !important; }
+
+.Will_not_vote.stroke-color {
+  stroke: #c1c1c1 !important; }
+.Will_not_vote.fill-color {
+  fill: #c1c1c1 !important; }
+.Will_not_vote.stroke-pseudo-transparent-color {
+  stroke: #f3f3f3 !important; }
+.Will_not_vote .stroke-color {
+  stroke: #c1c1c1 !important; }
+.Will_not_vote .fill-color {
+  fill: #c1c1c1 !important; }
+.Will_not_vote .stroke-pseudo-transparent-color {
+  stroke: #f3f3f3 !important; }
+
+body {
+  padding-top: 3em;
+  color: #424242; }
+  body svg text {
+    fill: #424242; }
+
+.main-title {
+  min-height: 10em;
+  margin-bottom: 2em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; }
+  .main-title h3 {
+    font-size: 2.3em;
+    font-weight: 800;
+    text-align: center; }
+
+h4 {
+  font-weight: 300; }
+
+a.dotted {
+  border-bottom: 1px dotted; }
+  a.dotted:hover {
+    text-decoration: none; }
+
+.footer .share-btn {
+  color: #bdbdbd; }
+  .footer .share-btn i {
+    margin: 25px 25px 25px 25px;
+    cursor: pointer;
+    width: 1.85em;
+    height: 1.85em;
+    border: 1px solid #bdbdbd;
+    border-radius: 50%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 15px;
+    font-size: 2.5em; }
+  .footer .share-btn:hover {
+    color: #424242; }
+    .footer .share-btn:hover i {
+      border-color: #424242; }
+
+.infobox {
+  position: absolute;
+  top: 25px;
+  left: 0px;
+  max-width: 250px;
+  font-size: 1.1em; }
+
+h3 {
+  font-weight: 800;
+  font-size: 2em;
+  margin-top: 2em; }
+
+p {
+  font-size: 1.2em;
+  font-weight: 300; }
+
+@media (max-width: 767px) {
+  p {
+    font-size: 1.3em;
+    font-weight: 300; }
+
+  h3 {
+    font-size: 2em; } }
+.logo {
+  max-width: 100%; }
+
+.mobile {
+  display: none; }
+  @media (max-width: 700px) {
+    .mobile {
+      display: block; } }
+
+.desktop {
+  display: block; }
+  @media (max-width: 700px) {
+    .desktop {
+      display: none; } }
+
+select#chart-select {
+  border: 1px solid #777;
+  background-color: #e8e8e8;
+  cursor: help; }
+
+.map-container {
+  height: 90vh; }
+
+/*# sourceMappingURL=application.css.map */

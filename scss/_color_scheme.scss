@@ -1,0 +1,33 @@
+$color_0: red;
+$color_1: blue;
+
+
+@mixin candidate_name_color($cand_name, $color) {
+  .#{$cand_name} {
+    &.stroke-color { stroke: $color !important;}
+    &.fill-color { fill: $color !important;}
+    &.stroke-pseudo-transparent-color { stroke: mix($color, white, 20%) !important;}
+
+    .stroke-color { stroke: $color !important;}
+    .fill-color { fill: $color !important;}
+    .stroke-pseudo-transparent-color { stroke: mix($color, white, 20%) !important;}
+
+  }
+}
+
+@include candidate_name_color("Tymoshenko", #e41a1c);
+@include candidate_name_color("Poroshenko", #377eb8);
+@include candidate_name_color("Zelensky", #4daf4a);
+@include candidate_name_color("Grytsenko", #984ea3);
+@include candidate_name_color("Boyko", #ff7f00);
+@include candidate_name_color("Lyashko", #ff02e7);
+//@include candidate_name_color("Sadovy", #ffd900);
+@include candidate_name_color("Undecided", #c1c1c1);
+@include candidate_name_color("Will_not_vote", #c1c1c1);
+
+//"#e41a1c",
+//"#377eb8",
+//"#4daf4a",
+//"#984ea3",
+//"#ff7f00",
+//"#ffff33",

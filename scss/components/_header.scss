@@ -1,0 +1,32 @@
+header {
+  position: fixed;
+  top: 0;
+  background-color: white;
+  z-index: 1000;
+  width: 100vw;
+
+  .main-logo {
+    height: 2.5em;
+  }
+
+  border-bottom:1px solid #ccc;
+
+  .social-icons {
+    a {
+      font-size: 1.3em;
+      color: #aaa;
+
+      &:hover {
+        color: orange;
+      }
+    }
+
+    width: 3em;
+    margin-left: 2em;
+
+  }
+
+  .lang-link {
+    color: #424242;
+  }
+}

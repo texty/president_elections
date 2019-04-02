@@ -21974,6 +21974,7 @@ Shapes.prototype = {
         program = this.program,
         vertex = gl.getAttribLocation(program, 'vertex'),
         opacity = gl.getUniformLocation(program, 'opacity');
+
     gl.uniform1f(opacity, this.settings.opacity);
     gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
     gl.bufferData(gl.ARRAY_BUFFER, vertArray, gl.STATIC_DRAW);
@@ -22031,6 +22032,7 @@ Shapes.prototype = {
       color = undefined;
     } // -- data
 
+    debugger;
 
     for (; featureIndex < featureMax; featureIndex++) {
       feature = features[featureIndex]; //***
@@ -22101,7 +22103,9 @@ Shapes.prototype = {
     gl.attachShader(program, this.fragmentShader);
     gl.linkProgram(program);
     gl.useProgram(program);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND);
     this.program = program;
     return this;
