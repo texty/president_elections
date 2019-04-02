@@ -240,152 +240,152 @@
 							});
 							geojson = null;
 
-							// if (renderer.type === PIXI.RENDERER_TYPE.WEBGL) {
-							// 	(function() {
-							// 		mesh = new PIXI.Container();
-							// 		var point2index = {};
-							// 		var vertices = [];
-							// 		var edges = [];
-							// 		interiors.coordinates.forEach(function(arc) {
-							// 			arc.forEach(function(point, index) {
-							// 				var key = point[0] + '#' + point[1];
-							// 				var indexTo;
-							// 				if (!(key in point2index)) {
-							// 					indexTo = point2index[key] = vertices.length;
-							// 					vertices.push(point);
-							// 				} else {
-							// 					indexTo = point2index[key];
-							// 				}
-							// 				if (index > 0) {
-							// 					var prevPoint = arc[index - 1];
-							// 					var indexFrom = point2index[prevPoint[0] + '#' + prevPoint[1]];
-							// 					if (indexFrom !== indexTo) edges.push([indexTo, indexFrom]);
-							// 				}
-							// 			})
-							// 		});
-							// 		var memo = Object.create(null);
-							// 		var newIndex = 0;
-							// 		var meshVertices = [];
-							// 		var meshIndices = [];
-							// 		var iMax, iMin;
-							// 		function meshCreate(meshVertices, meshIndices) {
-							// 			var partialMesh = new PIXI.mesh.Mesh(null, new Float32Array(meshVertices), null, new Uint16Array(meshIndices));
-							// 			partialMesh.tint = 0x0;
-							// 			mesh.addChild(partialMesh);
-							// 		}
-							// 		function cb(polygon) {
-							// 			if (newIndex > 60000) {
-							// 				memo = Object.create(null);
-							// 				meshCreate(meshVertices, meshIndices);
-							// 				newIndex = 0;
-							// 				meshVertices = [];
-							// 				meshIndices = [];
-							// 			}
-							// 			var indices = polygon.map(function(point) {
-							// 				var key = point[0] + '#' + point[1];
-							// 				var index = memo[key];
-							// 				if (index !== undefined) return index;
-							// 				else {
-							// 					var index = memo[key] = newIndex++;
-							// 					meshVertices.push(point[0], point[1]);
-							// 					return index;
-							// 				}
-							// 			});
-							// 			iMax = polygon.length - 1;
-							// 			iMin = 0;
-							// 			meshIndices.push(indices[iMax]);
-							// 			while(iMax - iMin >= 2) {
-							// 				meshIndices.push(indices[iMax--], indices[iMin++]);
-							// 			}
-							// 			if (iMax === iMin) {
-							// 				meshIndices.push(indices[iMax], indices[iMax]);
-							// 			} else meshIndices.push(indices[iMax], indices[iMin], indices[iMin]);
-							// 		}
+							if (renderer.type === PIXI.RENDERER_TYPE.WEBGL) {
+								(function() {
+									mesh = new PIXI.Container();
+									var point2index = {};
+									var vertices = [];
+									var edges = [];
+									interiors.coordinates.forEach(function(arc) {
+										arc.forEach(function(point, index) {
+											var key = point[0] + '#' + point[1];
+											var indexTo;
+											if (!(key in point2index)) {
+												indexTo = point2index[key] = vertices.length;
+												vertices.push(point);
+											} else {
+												indexTo = point2index[key];
+											}
+											if (index > 0) {
+												var prevPoint = arc[index - 1];
+												var indexFrom = point2index[prevPoint[0] + '#' + prevPoint[1]];
+												if (indexFrom !== indexTo) edges.push([indexTo, indexFrom]);
+											}
+										})
+									});
+									var memo = Object.create(null);
+									var newIndex = 0;
+									var meshVertices = [];
+									var meshIndices = [];
+									var iMax, iMin;
+									function meshCreate(meshVertices, meshIndices) {
+										var partialMesh = new PIXI.mesh.Mesh(null, new Float32Array(meshVertices), null, new Uint16Array(meshIndices));
+										partialMesh.tint = 0x0;
+										mesh.addChild(partialMesh);
+									}
+									function cb(polygon) {
+										if (newIndex > 60000) {
+											memo = Object.create(null);
+											meshCreate(meshVertices, meshIndices);
+											newIndex = 0;
+											meshVertices = [];
+											meshIndices = [];
+										}
+										var indices = polygon.map(function(point) {
+											var key = point[0] + '#' + point[1];
+											var index = memo[key];
+											if (index !== undefined) return index;
+											else {
+												var index = memo[key] = newIndex++;
+												meshVertices.push(point[0], point[1]);
+												return index;
+											}
+										});
+										iMax = polygon.length - 1;
+										iMin = 0;
+										meshIndices.push(indices[iMax]);
+										while(iMax - iMin >= 2) {
+											meshIndices.push(indices[iMax--], indices[iMin++]);
+										}
+										if (iMax === iMin) {
+											meshIndices.push(indices[iMax], indices[iMax]);
+										} else meshIndices.push(indices[iMax], indices[iMin], indices[iMin]);
+									}
 
 
-							// 		graphDraw({vertices: vertices, edges: edges}, 2 / utils.getScale(12), cb, Math.PI);
-							// 		meshCreate(meshVertices, meshIndices);
-							// 	})();
-							// } else {
-							// 	mesh = new PIXI.Graphics();
-							// 	mesh.lineStyle(2 / utils.getScale(12), 0x0, 1);
-							// 	interiors.coordinates.forEach(function(path) {
-							// 		path.forEach(function(point, index) {
-							// 			if (index === 0) mesh.moveTo(point[0], point[1]);
-							// 			else mesh.lineTo(point[0], point[1]);
-							// 		});
-							// 	});
-							// }
+									graphDraw({vertices: vertices, edges: edges}, 2 / utils.getScale(12), cb, Math.PI);
+									meshCreate(meshVertices, meshIndices);
+								})();
+							} else {
+								mesh = new PIXI.Graphics();
+								mesh.lineStyle(2 / utils.getScale(12), 0x0, 1);
+								interiors.coordinates.forEach(function(path) {
+									path.forEach(function(point, index) {
+										if (index === 0) mesh.moveTo(point[0], point[1]);
+										else mesh.lineTo(point[0], point[1]);
+									});
+								});
+							}
 							interiors = null;
-							// container.addChild(mesh);
+							container.addChild(mesh);
 
-							// function findFeature(latlng) {
-							// 	var point = project(latlng);
-							// 	var features = tree.search({
-							// 		minX: point.x,
-							// 		minY: point.y,
-							// 		maxX: point.x,
-							// 		maxY: point.y
-							// 	});
-							// 	for (var i = 0; i < features.length; i++) {
-							// 		var feat = features[i].feature;
-							// 		if (feat.geometry.type === 'Polygon') {
-							// 			if (containsPoint(feat.geometry.coordinates, point)) return feat;
-							// 		} else {
-							// 			for (var j = 0; j < feat.geometry.coordinates.length; j++) {
-							// 				var ring = feat.geometry.coordinates[j];
-							// 				if (containsPoint(ring, point)) return feat;
-							// 			}
-							// 		}
-							// 	}
-							// }
-							// function focusFeature(feat) {
-							// 	if (focus) focus.removeFrom(utils.getMap());
-							// 	if (feat) {
-							// 		if (feat.properties.res !== -1) {
-							// 			focus = L.geoJSON(feat, {
-							// 				coordsToLatLng: utils.layerPointToLatLng,
-							// 				style: function (feature) {
-							// 					return {
-							// 						fillColor: '#fff',
-							// 						fillOpacity: 0.7,
-							// 						stroke: false
-							// 					};
-							// 				},
-							// 				interactive: false
-							// 			});
-							// 			focus.addTo(utils.getMap());
-							// 			var insee = feat.properties.insee;
-							// 			var dpt;
-							// 			if (insee[0] === '9' && insee[1] === '7') {
-							// 				dpt = insee.substring(0, 3);
-							// 			} else {
-							// 				dpt = '0' + insee.substring(0, 2);
-							// 			}
-							// 			getJSON('data/t2/' + dpt + '/' + feat.properties.insee + '.json', function(data) {
-							// 				var merged = barbiche('details').merge({
-							// 					panneau2candidate: panneau2candidate,
-							// 					panneau2color: panneau2color,
-							// 					getRatio: function(a, b) {return Math.round(a * 10000 / b) / 100;},
-							// 					fill: function(str) {
-							// 						if (str.length < 6) {
-							// 							return (new Array(6 - str.length + 1)).join('0') + str;
-							// 						} else return str;
-							// 					}
-							// 				}, data);
-							// 				legendContent.innerHTML = '';
-							// 				legendContent.appendChild(merged);
-							// 				L.DomUtil.removeClass(legend, 'hide');
-							// 			});
-							// 		} else {
-							// 			focus = null;
-							// 			L.DomUtil.addClass(legend, 'hide');
-							// 		};
-							// 	} else {
-							// 		focus = null;
-							// 		L.DomUtil.addClass(legend, 'hide');
-							// 	}
-							// }
+							function findFeature(latlng) {
+								var point = project(latlng);
+								var features = tree.search({
+									minX: point.x,
+									minY: point.y,
+									maxX: point.x,
+									maxY: point.y
+								});
+								for (var i = 0; i < features.length; i++) {
+									var feat = features[i].feature;
+									if (feat.geometry.type === 'Polygon') {
+										if (containsPoint(feat.geometry.coordinates, point)) return feat;
+									} else {
+										for (var j = 0; j < feat.geometry.coordinates.length; j++) {
+											var ring = feat.geometry.coordinates[j];
+											if (containsPoint(ring, point)) return feat;
+										}
+									}
+								}
+							}
+							function focusFeature(feat) {
+								if (focus) focus.removeFrom(utils.getMap());
+								if (feat) {
+									if (feat.properties.res !== -1) {
+										focus = L.geoJSON(feat, {
+											coordsToLatLng: utils.layerPointToLatLng,
+											style: function (feature) {
+												return {
+													fillColor: '#fff',
+													fillOpacity: 0.7,
+													stroke: false
+												};
+											},
+											interactive: false
+										});
+										focus.addTo(utils.getMap());
+										var insee = feat.properties.insee;
+										var dpt;
+										if (insee[0] === '9' && insee[1] === '7') {
+											dpt = insee.substring(0, 3);
+										} else {
+											dpt = '0' + insee.substring(0, 2);
+										}
+										getJSON('data/t2/' + dpt + '/' + feat.properties.insee + '.json', function(data) {
+											var merged = barbiche('details').merge({
+												panneau2candidate: panneau2candidate,
+												panneau2color: panneau2color,
+												getRatio: function(a, b) {return Math.round(a * 10000 / b) / 100;},
+												fill: function(str) {
+													if (str.length < 6) {
+														return (new Array(6 - str.length + 1)).join('0') + str;
+													} else return str;
+												}
+											}, data);
+											legendContent.innerHTML = '';
+											legendContent.appendChild(merged);
+											L.DomUtil.removeClass(legend, 'hide');
+										});
+									} else {
+										focus = null;
+										L.DomUtil.addClass(legend, 'hide');
+									};
+								} else {
+									focus = null;
+									L.DomUtil.addClass(legend, 'hide');
+								}
+							}
 							utils.getMap().on('click', function(e) {
 								var feat = findFeature(e.latlng);
 								focusFeature(feat);
@@ -447,8 +447,8 @@
 						})();
 					}
 					firstDraw = false;
-					// mesh.visible = (zoom >= 9);
-					// mesh.alpha = meshAlphaScale(zoom);
+					mesh.visible = (zoom >= 9);
+					mesh.alpha = meshAlphaScale(zoom);
 					prevZoom = zoom;
 					renderer.render(container);
 				}, pixiContainer, {
