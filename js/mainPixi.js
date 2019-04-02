@@ -168,7 +168,10 @@
 								});
 							});
 							var geojson = topojson.feature(topo, topo.objects["-"]);
-							var interiors = topojson.mesh(topo, topo.objects["-"], function(a, b) { return a !== b; });
+							var interiors = topojson.mesh(topo, topo.objects["-"], function(a, b) { 
+								// return a !== b;
+								return true;
+							 });
 							topo = null;
 
 							prevZoom = zoom;
