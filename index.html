@@ -1,0 +1,200 @@
+<!doctype html>
+<html>
+<head>
+    <title>Many Points with leaflet WebGL</title>
+    <meta charset="utf-8">
+
+    <style>
+        html, body {
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            background: rgb(255, 255, 255);
+        }
+
+        #map {
+            position: absolute;
+            height: 100%;
+            width: 100%;
+            /* background: rgb(255, 255, 255); */
+        }
+    </style>
+</head>
+<body>
+<div id="map"></div>
+<div id="lnlt"></div>
+<!-- <a href="https://github.com/robertleeplummerjr/Leaflet.glify">
+  <img
+      style="position: absolute; top: 0; right: 0; border: 0; z-index: 99999"
+      src="https://camo.githubusercontent.com/52760788cde945287fbb584134c4cbc2bc36f904/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f77686974655f6666666666662e706e67"
+      alt="Fork me on GitHub"
+      data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_right_white_ffffff.png"></a> -->
+</body>
+<link rel="stylesheet" href="style/leaflet.css" />
+<script src="libs/leaflet.js"></script>
+<script src="libs/d3.js"></script>
+<script src="libs/topojson.js"></script>
+
+
+<script src="libs/glify.js"></script>
+<script>
+  var map = L.map('map')
+          .setView([ 50.455779, 30.464253 ], 7);
+
+  // L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-background,$fff[difference],$fff[@23],$fff[hsl-saturation@20],toner-lines[destination-in])/{z}/{x}/{y}.png")
+  //   //L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-lite,$fff[difference],$fff[@23],$fff[hsl-saturation@20])/{z}/{x}/{y}.png")
+  //   .addTo(map);
+
+wget(['electionData.json'], function(electionPolygon) {
+
+    let tj = JSON.parse(electionPolygon);
+    let poly = topojson.feature(tj, tj.objects["simplified.merged"]);
+
+
+    function opacify(color, op) {
+      op = Math.min(op, 1); 
+      
+      color = d3.color(color);        
+       
+       return d3.rgb(
+           opacify_component(color.r, op)/255,
+           opacify_component(color.g, op)/255,
+           opacify_component(color.b, op)/255
+       )
+      //  .toString();        
+       
+       function opacify_component(c, op){
+           return c * op + (1 - op) * 255;
+       }
+   }
+   
+   let selected;
+
+    let shapes = L.glify.shapes({
+    map: map,
+    click: function (e, feature) {
+
+      // selected = L.glify.shapes({
+      //   map: map,
+      //   data: {type:'Feature Collection', features:[feature]}
+      // });
+
+      if (selected != undefined) {
+        selected.remove()
+      }
+
+      selected = L.geoJSON({type:'Feature Collection', features:[feature]}).addTo(map);
+
+
+      L.popup()
+        .setLatLng(e.latlng)
+        .setContent("You clicked on " + feature.properties.d)
+        .openOn(map);
+    },
+    opacity: 1,
+    color: function (index, feature) {
+
+      // return {
+      //   'r': 0.5,
+      //   'g': 0,
+      //   'b': 0
+      // }
+      if (!feature.properties.v9) {
+        return opacify('#dddddd', 1)
+        // return  {
+        // 'r': 0.3,
+        // 'g': 0.3,
+        // 'b': 0.1,
+        // 'a': 0.6
+        // }
+      }
+
+    let zelenski = feature.properties.z/feature.properties.v9 * 100
+    let poroshenko = feature.properties.p/feature.properties.v9 * 100
+    // let yavka = feature.properties.v9/feature.properties.v2
+    
+    let yavka = feature.properties.v2/1000
+    // yavka = yavka > 1 ? 1 : yavka
+
+    
+
+    let diff = zelenski-poroshenko
+
+    let color;
+
+
+    if (Math.abs(diff) < 10) {
+
+      color = opacify('#874e8e', yavka)
+      // color = {
+      // 'r': 0,
+      // 'g': 0,
+      // 'b': 1       
+      // }
+
+    }
+    else {
+      if (diff > 0) {
+        color = opacify('#000253', yavka)
+      // color = {
+      // 'r': 0,
+      // 'g': 0.71,
+      // 'b': 0.28       
+      // }
+    }
+    else {
+      color = opacify('#bc3939', yavka)
+
+    }
+    }
+    // let NUMERIC_REGEXP = /[-]{0,1}[\d]*[\.]{0,1}[\d]+/g;
+    // let col = d3.interpolateRdYlGn(poroshenko).match(NUMERIC_REGEXP)
+
+    // let color = {
+    //   'r': +col[0]/100,
+    //   'g': +col[1]/100,
+    //   'b': +col[2]/100
+    // }
+
+    return color
+    },
+      data: poly
+    });
+
+
+
+
+
+    // L.glify.lines({
+    //   map: map,
+    //   latitudeKey: 1,
+    //   longitudeKey: 0,
+    //   click: function (e, feature) {
+    //     L.popup()
+    //       .setLatLng(e.latlng)
+    //       .setContent("You clicked on " + feature.properties.name)
+    //       .openOn(map);      },
+    //   data: (poly)
+    // });
+
+  });
+
+  function wget(urls, fn) {
+    var results = [],
+      complete = 0,
+      total = urls.length;
+
+    urls.forEach(function(url, i) {
+      var request = new XMLHttpRequest();
+      request.open('GET', url, true);
+      request.onload = function () {
+        if (request.status < 200 && request.status > 400) return;
+        results[i] = request.responseText;
+        complete++;
+        if (complete === total) fn.apply(null, results);
+      };
+      request.send();
+    });
+  }
+</script>
+</html>
