@@ -7,6 +7,29 @@ let closeResultColor = "#874e8e";
 let emptyColor = "#dddddd";
 
 
+let legend = L.control({position: 'topright'});
+
+legend.onAdd = function (map) {
+
+var div = L.DomUtil.create('div', 'info legend'),
+    grades = [zelenskiColor, closeResultColor, poroshenkoColor],
+    labels = ["Зеленський", "Близький результат" ,"Порошенко"];
+
+// div.innerHTML += "<h3>Легенда</h3>"
+
+// loop through our density intervals and generate a label with a colored square for each interval
+for (var i = 0; i < grades.length; i++) {
+    div.innerHTML +=
+        '<span class="dot" style="background:' + grades[i] + '"></span> ' + " " + labels[i] +'<br>';
+}
+
+return div;
+};
+
+legend.addTo(map);
+
+
+
 // L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-background,$fff[difference],$fff[@23],$fff[hsl-saturation@20],toner-lines[destination-in])/{z}/{x}/{y}.png")
 //   //L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-lite,$fff[difference],$fff[@23],$fff[hsl-saturation@20])/{z}/{x}/{y}.png")
 //   .addTo(map);
@@ -36,6 +59,7 @@ wget(['electionData.json'], function (electionPolygon) {
 
     let selected;
 
+
     let shapes = L.glify.shapes({
         map: map,
         click: function (e, feature) {
@@ -45,12 +69,24 @@ wget(['electionData.json'], function (electionPolygon) {
             }
 
             // adding polygon on selected 
-            selected = L.geoJSON({ type: 'Feature Collection', features: [feature] }).addTo(map);
+            selected = L.geoJSON({ type: 'Feature Collection', features: [feature] }, {style: {color: 'yellow'}}).addTo(map);
 
+            let z = feature.properties.z  ? feature.properties.z : 'Немає даних'
+            let p = feature.properties.p  ? feature.properties.p : 'Немає даних'
+            let yavka = feature.properties.v9/feature.properties.v2 * 100
+            yavka = yavka == NaN ? yavka : "Немає даних"
+            console.log(yavka);
 
             L.popup()
                 .setLatLng(e.latlng)
-                .setContent("You clicked on " + feature.properties.d)
+                .setContent("<b>" + "Номер дільниці: " + feature.properties.d + "</b>" 
+                            + "</br>" + "<span>Проголосували за Зеленського: "  
+                            + z +  "</span>"
+                            + "</br>" + "<span>Проголосували за Порошенка: "  
+                            + p +  "</span>"  
+                            + "</br>" + "<span>Явка на дільниці: "  
+                            + yavka +  "</span>"                           
+                            )
                 .openOn(map);
         },
         opacity: 1,
@@ -97,6 +133,8 @@ wget(['electionData.json'], function (electionPolygon) {
         },
         data: poly
     });
+
+    console.log(shapes);
 
 
 });
