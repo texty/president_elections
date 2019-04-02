@@ -100,7 +100,11 @@
 			// loop through our density intervals and generate a label with a colored square for each interval
 			for (var i = 0; i < grades.length; i++) {
 				div.innerHTML +=
-					'<span class="dot" style="background:' + grades[i].replace('0x', '#') + '"></span> ' + " " + labels[i] +'<br>';
+					'<span class="dot" style="background:' + opacify(grades[i].replace('0x', '#'), 1).replace('0x', '#') + '"></span> ' +
+					'<span class="dot" style="background:' + opacify(grades[i].replace('0x', '#'), 0.7).replace('0x', '#') + '"></span> ' +
+					'<span class="dot" style="background:' + opacify(grades[i].replace('0x', '#'), 0.5).replace('0x', '#') + '"></span> ' +
+					'<span class="dot" style="background:' + opacify(grades[i].replace('0x', '#'), 0.3).replace('0x', '#') + '"></span> ' +
+					 " " + labels[i] +'<br>';
 			}
 			
 			return div;
