@@ -22101,7 +22101,9 @@ Shapes.prototype = {
     gl.attachShader(program, this.fragmentShader);
     gl.linkProgram(program);
     gl.useProgram(program);
-    gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+    // gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
+    gl.blendFuncSeparate(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA, gl.ONE, gl.ONE_MINUS_SRC_ALPHA)
     gl.enable(gl.BLEND);
     this.program = program;
     return this;

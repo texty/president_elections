@@ -1,10 +1,10 @@
 let map = L.map('map')
-    .setView([50.455779, 30.464253], 7);
+    .setView([50.455779, 30.464253], 14);
 
 let zelenskiColor = "#4e9a69";
 let poroshenkoColor = "#790a4f";
 let closeResultColor = "#4D7794";
-let emptyColor = "#dddddd";
+let emptyColor = "#000";
 
 
 let legend = L.control({position: 'topright'});
@@ -30,18 +30,16 @@ legend.addTo(map);
 
 
 
-// L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-background,$fff[difference],$fff[@23],$fff[hsl-saturation@20],toner-lines[destination-in])/{z}/{x}/{y}.png")
-//   //L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-lite,$fff[difference],$fff[@23],$fff[hsl-saturation@20])/{z}/{x}/{y}.png")
-//   .addTo(map);
 
 wget(['newElectionData.json'], function (electionPolygon) {
 
     let tj = JSON.parse(electionPolygon);
     let poly = topojson.feature(tj, tj.objects["-"]);
-
+    poly.features = poly.features.filter(f => f.properties.d.substring(0, 2)=="80");
 
     function opacify(color, op) {
         op = Math.min(op, 1);
+        // op = 1;
 
         color = d3.color(color);
 
@@ -63,13 +61,25 @@ wget(['newElectionData.json'], function (electionPolygon) {
     let shapes = L.glify.shapes({
         map: map,
         click: function (e, feature) {
+            console.log(feature);
 
-            if (selected != undefined) {
-                selected.remove()
-            }
+            // if (selected != undefined) {
+            //     selected.remove()
+            // }
+
+            L.glify.shapes({
+                map: map,
+                data: { type: 'Feature Collection', features: [feature] },
+                click: function(e, feature) {
+                  //do something when a shape is clicked
+                }, 
+                color: function() {
+                    return opacify('blue', 1);
+                }
+              });
 
             // adding polygon on selected 
-            selected = L.geoJSON({ type: 'Feature Collection', features: [feature] }, {style: {color: 'yellow'}}).addTo(map);
+            // selected = L.geoJSON({ type: 'Feature Collection', features: [feature] }, {style: {color: 'yellow'}}).addTo(map);
 
             let z = feature.properties.z  ? feature.properties.z : 'Немає даних'
             let p = feature.properties.p  ? feature.properties.p : 'Немає даних'
@@ -89,16 +99,22 @@ wget(['newElectionData.json'], function (electionPolygon) {
                             )
                 .openOn(map);
         },
-        opacity: 1,
+        opacity: 0.5,
         color: function (index, feature) {
+            // return opacify('blue', 1)
             if (!feature.properties.v9) {
                 return opacify(emptyColor, 1)
+            }
+
+            if (feature.properties.d == '800079') {
+                debugger;
             }
 
             let zelenski = feature.properties.z / feature.properties.v9 * 100
             let poroshenko = feature.properties.p / feature.properties.v9 * 100
 
-            let yavka = feature.properties.v2 / 1000
+            var area = turf.area(feature);
+            let yavka = feature.properties.v2 / (area/300000)
 
             let diff = zelenski - poroshenko
 
@@ -134,8 +150,13 @@ wget(['newElectionData.json'], function (electionPolygon) {
         data: poly
     });
 
-    console.log(shapes);
-
+    L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
+        maxZoom: 18,
+        attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' +
+        '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
+        'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+        id: 'mapbox.light'
+    }).addTo(map);
 
 });
 
