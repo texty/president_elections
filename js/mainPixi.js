@@ -62,7 +62,7 @@
 
 	document.addEventListener("DOMContentLoaded", function() {
 		getJSON('data/newElectionData.json', function(topo) {
-			var map = L.map('map').setView([50.455779, 30.464253], 6);
+			var map = L.map('map').setView([50.455779, 30.464253], 9);
 
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 				maxZoom: 18,
@@ -71,6 +71,14 @@
 				'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 				id: 'mapbox.light'
 			}).addTo(map);
+
+
+			// var gl = L.mapboxGL({
+			// 	accessToken: 'pk.eyJ1IjoiZHJpbWFjdXMxODIiLCJhIjoiWGQ5TFJuayJ9.6sQHpjf_UDLXtEsz8MnjXw',
+			// 	maxZoom: 19,
+				// style: 'data/internet.json'
+			// }).addTo(map);
+	
 
 			map.attributionControl.setPosition('bottomleft');
 			map.zoomControl.setPosition('bottomright');
@@ -215,7 +223,7 @@
 								let poroshenko = feature.properties.p / feature.properties.v9 * 100					
 								let diff = zelenski - poroshenko;
 
-								let density = feature.properties.v2 / feature.properties.a * 50;
+								let density = feature.properties.v2 / feature.properties.a * 100;
 								let color;
 					
 					
@@ -387,7 +395,8 @@
 													+ "</br>" + "<span>Проголосували за Порошенка: "  
 													+ feat.properties.p +  "</span>"  
 													+ "</br>" + "<span>Явка на дільниці: "  
-													+ Math.round(feat.properties.v9/feat.properties.v2 * 100) +  "%</span>"                           
+													+ Math.round(feat.properties.v9/feat.properties.v2 * 100) +  "%</span>"
+													+ '</br><span>Населення:</span>' + feat.properties.v2 + '</span>'                         
 													)
 										.openOn(map);								
 
@@ -487,7 +496,7 @@
 
 	function opacify(color, op) {
 		color = color.replace("0x", "#")
-		op = Math.min(op, 1);
+		op = Math.max(Math.min(op, 1), 0.5);
 		// op = 1;
 
 		color = d3.color(color);
