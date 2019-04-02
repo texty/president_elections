@@ -35,7 +35,7 @@ wget(['newElectionData.json'], function (electionPolygon) {
 
     let tj = JSON.parse(electionPolygon);
     let poly = topojson.feature(tj, tj.objects["-"]);
-    poly.features = poly.features.filter(f => f.properties.d.substring(0, 2)=="80");
+    // poly.features = poly.features.filter(f => f.properties.d.substring(0, 2)=="80");
 
     function opacify(color, op) {
         op = Math.min(op, 1);
