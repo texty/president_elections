@@ -1,7 +1,10 @@
 let map = L.map('map')
     .setView([50.455779, 30.464253], 7);
 
-
+let zelenskiColor = "#000253";
+let poroshenkoColor = "#bc3939";
+let closeResultColor = "#874e8e";
+let emptyColor = "#dddddd";
 
 
 // L.tileLayer("http://{s}.sm.mapstack.stamen.com/(toner-background,$fff[difference],$fff[@23],$fff[hsl-saturation@20],toner-lines[destination-in])/{z}/{x}/{y}.png")
@@ -53,7 +56,7 @@ wget(['electionData.json'], function (electionPolygon) {
         opacity: 1,
         color: function (index, feature) {
             if (!feature.properties.v9) {
-                return opacify('#dddddd', 1)
+                return opacify(emptyColor, 1)
             }
 
             let zelenski = feature.properties.z / feature.properties.v9 * 100
@@ -69,14 +72,14 @@ wget(['electionData.json'], function (electionPolygon) {
             // if difference between P and Z is small
             if (Math.abs(diff) < 10) {
 
-                color = opacify('#874e8e', yavka)
+                color = opacify(closeResultColor, yavka)
 
             }
             // if difference between P and Z is bigger than 10%
             else {
                 // if Z has more votes
                 if (diff > 0) {
-                    color = opacify('#000253', yavka)
+                    color = opacify(zelenskiColor, yavka)
                     // color = {
                     // 'r': 0,
                     // 'g': 0.71,
@@ -85,7 +88,7 @@ wget(['electionData.json'], function (electionPolygon) {
                 }
                 // if P has more votes
                 else {
-                    color = opacify('#bc3939', yavka)
+                    color = opacify(poroshenkoColor, yavka)
 
                 }
             }
