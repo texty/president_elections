@@ -2,6 +2,7 @@
     line-height: 18px;
     color: #555;
     background-color: white;
+    border-radius: 6%;
 }
 .legend i {
     width: 18px;

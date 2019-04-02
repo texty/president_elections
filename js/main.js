@@ -74,7 +74,7 @@ wget(['electionData.json'], function (electionPolygon) {
             let z = feature.properties.z  ? feature.properties.z : 'Немає даних'
             let p = feature.properties.p  ? feature.properties.p : 'Немає даних'
             let yavka = feature.properties.v9/feature.properties.v2 * 100
-            yavka = yavka == NaN ? yavka : "Немає даних"
+            yavka = yavka != NaN ? Math.round(yavka) : "Немає даних"
             console.log(yavka);
 
             L.popup()
