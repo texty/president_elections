@@ -129,5 +129,38 @@ select#chart-select {
 }
 
 .map-container {
-  height: 90vh;
+  height: 150vh;
+
 }
+
+  div.legend {
+    line-height: 18px;
+    color: #555;
+    background-color: white;
+    border-radius: 6%;
+  }
+
+  div.legend i {
+      width: 18px;
+      height: 18px;
+      float: left;
+      margin-right: 8px;
+      opacity: 0.7;
+  }
+  .dot {
+      height: 20px;
+      width: 20px;
+      /* border-radius: 50%; */
+      display: inline-block;
+  }
+
+  .info {
+      padding: 6px 8px;
+  }
+
+  div.leaflet-popup-tip-container {
+    display: none;
+  }
+
+
+
