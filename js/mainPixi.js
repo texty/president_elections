@@ -62,7 +62,7 @@
 
 	document.addEventListener("DOMContentLoaded", function() {
 		getJSON('data/newElectionData.json', function(topo) {
-			var map = L.map('map').setView([50.455779, 30.464253], 8);
+			var map = L.map('map').setView([ 49.414992, 32.077697 ], 7);
 
 			L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
 				maxZoom: 18,
@@ -234,7 +234,9 @@
 								let poroshenko = feature.properties.p / feature.properties.v9 * 100					
 								let diff = zelenski - poroshenko;
 
-								let density = feature.properties.v2 / feature.properties.a * 100;
+								let leader = Math.max(poroshenko,zelenski)
+
+								let density = leader / feature.properties.a * 100;
 								let color;
 					
 					
