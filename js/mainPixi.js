@@ -400,13 +400,13 @@
 
 										L.popup()
 										.setLatLng(latlng)
-										.setContent("<b>" + "Номер дільниці: " + feat.properties.d + "</b>" 
-													+ "</br>" + "<span>Проголосували за Зеленського: "  
-													+ feat.properties.z +  "</span>"
-													+ "</br>" + "<span>Проголосували за Порошенка: "  
-													+ feat.properties.p +  "</span>"  
+										.setContent( "Номер дільниці: " + "<b>" + feat.properties.d + "</b>" 
+													+ "</br>" + "<span>За Зеленського: "  
+													+ '<b>' + feat.properties.z + '</b>' +  "</span>"
+													+ "</br>" + "<span>За Порошенка: "  
+													+ '<b>' + feat.properties.p + '</b>' +  "</span>"  
 													+ "</br>" + "<span>Явка на дільниці: "  
-													+ Math.round(feat.properties.v9/feat.properties.v2 * 100) +  "%</span>"
+													+ '<b>' + Math.round(feat.properties.v9/feat.properties.v2 * 100)+ '</b>' +  "%</span>"
 													// + '</br><span>Населення:</span>' + feat.properties.v2 + '</span>'                         
 													)
 										.openOn(map);								
