@@ -444,7 +444,6 @@ body svg text {
 
 .main-title {
   min-height: 10em;
-  margin-bottom: 2em;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -511,7 +510,6 @@ a.dotted:hover {
 h3 {
   font-weight: 800;
   font-size: 2em;
-  margin-top: 2em;
 }
 
 p {
