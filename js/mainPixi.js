@@ -94,8 +94,8 @@
 			legend.onAdd = function (map) {
 			
 			var div = L.DomUtil.create('div', 'info legend'),
-				grades = [zelenskiColor, closeResultColor, poroshenkoColor],
-				labels = ["Зеленський", "Близький результат" ,"Порошенко"];
+				grades = [zelenskiColor, closeResultColor, poroshenkoColor, emptyColor],
+				labels = ["Зеленський", "Близький результат" ,"Порошенко", "Немає даних"];
 						
 			// loop through our density intervals and generate a label with a colored square for each interval
 			for (var i = 0; i < grades.length; i++) {
