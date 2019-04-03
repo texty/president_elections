@@ -236,7 +236,7 @@
 
 								let leader = Math.max(poroshenko,zelenski)
 
-								let density = leader / feature.properties.a * 10000;
+								let density = leader / feature.properties.a * 1000;
 								let color;
 					
 					
