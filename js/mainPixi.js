@@ -401,6 +401,7 @@
 										L.popup()
 										.setLatLng(latlng)
 										.setContent( "Номер дільниці: " + "<b>" + feat.properties.d + "</b>" 
+													+ "</br>" + "Адреса дільниці: "  + feat.properties.adr 
 													+ "</br>" + "<span>За Зеленського: "  
 													+ '<b>' + feat.properties.z + '</b>' +  "</span>"
 													+ "</br>" + "<span>За Порошенка: "  
