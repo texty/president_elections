@@ -562,6 +562,10 @@ select#chart-select {
   background: url("https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif") no-repeat center center;
 }
 
+.map-container .leaflet-top {
+  top: 2.5em;
+}
+
 .loader {
   border: 16px solid #f3f3f3;
   /* Light grey */

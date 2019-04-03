@@ -132,7 +132,11 @@ select#chart-select {
   height: 150vh;
   background: url('https://media.giphy.com/media/3oEjI6SIIHBdRxXI40/giphy.gif') no-repeat center center;
 
+  .leaflet-top {
+    top: 2.5em;
+  }
 }
+
 
 .loader {
   border: 16px solid #f3f3f3; /* Light grey */
