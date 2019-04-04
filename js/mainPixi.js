@@ -126,7 +126,7 @@
 			
 			var div = L.DomUtil.create('div', 'info legend'),
 				grades = [zelenskiColor, closeResultColor, poroshenkoColor],
-				labels = ["Зеленський", "Різниця менше 10%" ,"Порошенко"];
+				labels = ["Зеленський", "Різниця +- 10%" ,"Порошенко"];
 						
 			// loop through our density intervals and generate a label with a colored square for each interval
 			for (var i = 0; i < grades.length; i++) {
